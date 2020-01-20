@@ -1,4 +1,4 @@
-name: Deploy flex-alert to NAIS
+name: Deploy arbeidsgiver-alert to NAIS
 on:
   push:
     branches:
