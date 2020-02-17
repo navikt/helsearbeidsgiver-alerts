@@ -2,14 +2,12 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Alert"
 metadata:
   name: harbeidsgiver-alerts
-  namespace: default
   labels:
     team: helsearbeidsgiver
 spec:
   receivers:
     slack:
       channel: '#team-hell-alerts'
-      #prependText: '<!here> | '
   alerts:
     - alert: harbeidsgiver-app-nede
       expr: up{app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend",job="kubernetes-pods"} == 0
