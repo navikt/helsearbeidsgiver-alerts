@@ -11,14 +11,14 @@ spec:
       #prependText: '<!here> | '
   alerts:
     - alert: harbeidsgiver-app-nede
-      expr: up{app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend",job="kubernetes-pods"} == 0
+      expr: up{app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend|sporenstreks|sporenstreks-frontend",job="kubernetes-pods"} == 0
       for: 2m
       description: "{{ $labels.app }} er nede"
       action: "Se `kubectl describe pod {{ $labels.kubernetes_pod_name }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }}` for logger"
       sla: respond within 1h, during office hours
       severity: danger
     - alert: harebeidsgiver-kontinuerlig-restart
-      expr: sum(increase(kube_pod_container_status_restarts_total{container=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend"}[30m])) by (container) > 2
+      expr: sum(increase(kube_pod_container_status_restarts_total{container=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend|sporenstreks|sporenstreks-frontend"}[30m])) by (container) > 2
       for: 5m
       description: "{{ $labels.container }} har restartet flere ganger siste halvtimen!"
       action: "Se `kubectl describe pod {{ $labels.container }}` for events, og `kubectl logs {{ $labels.container }}` for logger"
@@ -32,12 +32,12 @@ spec:
       sla: respond within 1h, during office hours
       severity: danger
     - alert: harebeidsgiver-errorlogging
-      expr: (100 * sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend"}[5m]))) > 10
+      expr: (100 * sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend|sporenstreks|sporenstreks-frontend",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding|spberegning|helse-spion|helse-spion-frontend|sporenstreks|sporenstreks-frontend"}[5m]))) > 10
       for: 3m
       description: "{{ $labels.log_app }} rapporterer error i loggene"
       action: "Sjekk loggene til {{ $labels.log_app }}, for å se hvorfor det er så mye feil (over 10 feil per 100 logger de siste 5 minuttene)"
     - alert: syfoinntektsmelding-mottar-ikke-im
       expr: sum(increase(syfoinntektsmelding_inntektsmeldinger_mottatt_total [5m]) ) < 1 AND hour() > 6 AND hour() < 17 AND day_of_week() < 6
       for: 3m
-      description: "{{ $labels.log_app }} rapporterer error i loggene"
-      action: "Sjekk loggene til {{ $labels.log_app }}, for å se hvorfor det er så mye feil (over 10 feil per 100 logger de siste 5 minuttene)"
+      description: "{{ $labels.log_app }} mottar ikke inntektsmeldinger"
+      action: "Sjekk loggene til {{ $labels.log_app }})"
