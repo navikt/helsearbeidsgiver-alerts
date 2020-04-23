@@ -10,11 +10,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
-      - name: Call deployment-cli/action and apply yaml file to prod-fss
-        uses: navikt/deployment-cli/action@0.4.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          cluster: prod-fss
-          team: helsearbeidsgiver
-          rawresources: arbeidsgiver-alerts.yaml
+      - uses: nais/deploy/actions/deploy@v1
+          env:
+            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+            CLUSTER: prod-fss
+            RAWRESOURCEs: arbeidsgiver-alerts.yaml
