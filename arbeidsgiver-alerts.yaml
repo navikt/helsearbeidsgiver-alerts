@@ -1,7 +1,8 @@
-apiVersion: "nais.io/v1"
-kind: "Alert"
+apiVersion: nais.io/v1
+kind: Alert
 metadata:
   name: harbeidsgiver-alerts
+  namespace: default
   labels:
     team: helsearbeidsgiver
 spec:
