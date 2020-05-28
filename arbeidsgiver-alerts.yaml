@@ -12,14 +12,14 @@ spec:
     - alert: harbeidsgiver-app-nede
       expr: up{app=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend",job="kubernetes-pods"} == 0
       for: 2m
-      description: "{{ $labels.app }} er nede"
+      description: "{{ $labels.app }} er nede @here"
       action: "Se `kubectl describe pod {{ $labels.kubernetes_pod_name }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }}` for logger"
       sla: respond within 1h, during office hours
       severity: danger
     - alert: harebeidsgiver-kontinuerlig-restart
       expr: sum(increase(kube_pod_container_status_restarts_total{container=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend"}[30m])) by (container) > 2
       for: 5m
-      description: "{{ $labels.container }} har restartet flere ganger siste halvtimen!"
+      description: "{{ $labels.container }} har restartet flere ganger siste halvtimen! @here"
       action: "Se `kubectl describe pod {{ $labels.container }}` for events, og `kubectl logs {{ $labels.container }}` for logger"
       sla: respond within 1h, during office hours
       severity: danger
@@ -31,12 +31,20 @@ spec:
       sla: respond within 1h, during office hours
       severity: danger
     - alert: harebeidsgiver-errorlogging
-      expr: (100 * sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend"}[5m]))) > 10
+      expr: (100 * sum by (log_app) (rate(logd_messages_total{log_app=~"spberegning|sporenstreks|sporenstreks-frontend",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_app=~"spberegning|sporenstreks|sporenstreks-frontend"}[5m]))) > 10
       for: 3m
-      description: "{{ $labels.log_app }} rapporterer error i loggene"
+      description: "{{ $labels.log_app }} rapporterer error i loggene @here"
       action: "Sjekk loggene til {{ $labels.log_app }}, for å se hvorfor det er så mye feil (over 10 feil per 100 logger de siste 5 minuttene)"
-    - alert: syfoinntektsmelding-mottar-ikke-im
-      expr: sum(increase(syfoinntektsmelding_inntektsmeldinger_mottatt_total [5m]) ) < 1 AND hour() > 8 AND hour() < 16 AND day_of_week() < 6 AND day_of_week() > 0
+      severity: danger
+    - alert: harebeidsgiver-errorlogging
+      expr: (100 * sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding",log_level="Error"}[15m])) / sum by (log_app) (rate(logd_messages_total{log_app=~"syfoinntektsmelding"}[15m]))) > 20
       for: 3m
-      description: "{{ $labels.log_app }} Har ikke mottatt noen inntektsmeldinger de siste 5 minuttene"
+      description: "{{ $labels.log_app }} rapporterer error i loggene @here"
+      action: "Sjekk loggene til {{ $labels.log_app }}, for å se hvorfor det er så mye feil (over 20 feil per 100 logger de siste 15 minuttene)"
+      severity: warning
+    - alert: syfoinntektsmelding-mottar-ikke-im
+      expr: sum(increase(syfoinntektsmelding_inntektsmeldinger_mottatt_total [20m]) ) < 1 AND hour() > 8 AND hour() < 16 AND day_of_week() < 6 AND day_of_week() > 0
+      for: 3m
+      description: "{{ $labels.log_app }} Har ikke mottatt noen inntektsmeldinger de siste 20 minuttene"
       action: "Prøv å finn ut hvorfor {{ $labels.log_app }} ikke mottar inntektsmeldinger"
+      severity: warning
