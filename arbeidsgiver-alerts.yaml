@@ -49,3 +49,17 @@ spec:
       description: "{{ $labels.log_app }} Har ikke mottatt noen inntektsmeldinger de siste 20 minuttene"
       action: "Prøv å finn ut hvorfor {{ $labels.log_app }} ikke mottar inntektsmeldinger"
       severity: warning
+
+    - alert: bakgrunnsjobb-feilet
+      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_feilet_total[5m]))
+      for: 10m
+      description: "En bakgrunnsjobb feilet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
+      action: "Sjekk om feilen er forbigående eller krever manuell håndtering"
+      severity: warning
+
+    - alert: bakgrunnsjobb-feilet-permanent
+      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_stoppet_total[5m]))
+      for: 1m
+      description: "En bakgrunnsjobb ble stoppet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
+      action: "Denne jobben vil _ikke_ bli forsøkt på nytt. Manuell oppfølging kreves!"
+      severity: error
