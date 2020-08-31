@@ -51,14 +51,14 @@ spec:
       severity: warning
 
     - alert: bakgrunnsjobb-feilet
-      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_feilet_total[5m]))
-      for: 10m
+      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_feilet_total[5m])) > 1
+      for: 2m
       description: "En bakgrunnsjobb feilet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
       action: "Sjekk om feilen er forbigående eller krever manuell håndtering"
       severity: warning
 
     - alert: bakgrunnsjobb-feilet-permanent
-      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_stoppet_total[5m]))
+      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_stoppet_total[5m])) > 1
       for: 1m
       description: "En bakgrunnsjobb ble stoppet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
       action: "Denne jobben vil _ikke_ bli forsøkt på nytt. Manuell oppfølging kreves!"
