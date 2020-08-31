@@ -62,4 +62,4 @@ spec:
       for: 1m
       description: "En bakgrunnsjobb ble stoppet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
       action: "Denne jobben vil _ikke_ bli forsøkt på nytt. Manuell oppfølging kreves!"
-      severity: error
+      severity: danger
