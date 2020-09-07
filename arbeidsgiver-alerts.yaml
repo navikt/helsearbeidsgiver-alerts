@@ -50,13 +50,6 @@ spec:
       action: "Prøv å finn ut hvorfor {{ $labels.log_app }} ikke mottar inntektsmeldinger"
       severity: warning
 
-    - alert: bakgrunnsjobb-feilet
-      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_feilet_total[5m])) > 1
-      for: 2m
-      description: "En bakgrunnsjobb feilet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
-      action: "Sjekk om feilen er forbigående eller krever manuell håndtering"
-      severity: warning
-
     - alert: bakgrunnsjobb-feilet-permanent
       expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_stoppet_total[5m])) > 1
       for: 1m
