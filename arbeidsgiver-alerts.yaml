@@ -56,3 +56,10 @@ spec:
       description: "En bakgrunnsjobb ble stoppet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
       action: "Denne jobben vil _ikke_ bli forsøkt på nytt. Manuell oppfølging kreves!"
       severity: danger
+
+    - alert: bakgrunnsjobb-feilet-permanent
+      expr: sum(increase(sporenstreks_bakgrunnsjobb_stoppet_total[5m])) > 1
+      for: 1m
+      description: "En bakgrunnsjobb ble stoppet i {{ $labels.log_app }} med feilmelding {{ $labels.log_message }}"
+      action: "Denne jobben vil _ikke_ bli forsøkt på nytt. Manuell oppfølging kreves!"
+      severity: danger
