@@ -8,7 +8,7 @@ metadata:
 spec:
   receivers:
     slack:
-      channel: '#team-hell-alerts'
+      channel: '#helse-arbeidsgiver-alerts'
   alerts:
     - alert: harbeidsgiver-app-nede
       expr: up{app=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend",job="kubernetes-pods"} == 0
