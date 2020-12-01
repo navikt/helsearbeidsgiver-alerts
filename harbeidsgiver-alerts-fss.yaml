@@ -1,7 +1,7 @@
 apiVersion: nais.io/v1
 kind: Alert
 metadata:
-  name: harbeidsgiver-alerts
+  name: harbeidsgiver-alerts-fss
   namespace: default
   labels:
     team: helsearbeidsgiver

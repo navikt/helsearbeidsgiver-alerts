@@ -14,4 +14,15 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
-          RESOURCE: arbeidsgiver-alerts.yaml
+          RESOURCE: harbeidsgiver-alerts-fss.yaml
+  deploy_prod_gcp:
+    name: Deploy alert to prod-gcp
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: harbeidsgiver-alerts-gcp.yaml

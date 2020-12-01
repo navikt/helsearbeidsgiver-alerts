@@ -1,0 +1,32 @@
+apiVersion: "nais.io/v1"
+kind: "Alert"
+metadata:
+  name: harbeidsgiver-alerts-gcp
+  namespace: helsearbeidsgiver
+  labels:
+    team: helsearbeidsgiver
+spec:
+  receivers:
+    slack:
+      channel: '#helse-arbeidsgiver-alerts'
+  alerts:
+    - alert: harbeidsgiver-app-nede
+      expr: sum(up{team="helsearbeidsgiver"}) by (app) == 0
+      for: 2m
+      description: "{{ $labels.app }} er nede <!channel>"
+      action: "Se `kubectl describe pod {{ $labels.pod_name }} -n helsearbeidsgiver` for events, og `kubectl logs {{ $labels.pod_name }} -n helsearbeidsgiver` for logger"
+      sla: respond within 1h, during office hours
+      severity: danger
+    - alert: harebeidsgiver-kontinuerlig-restart
+      expr: sum(increase(kube_pod_container_status_restarts_total{namespace="helsearbeidsgiver", container=~"fritakagp|fritak-agp-frontend"}[30m])) by (container) > 2
+      for: 5m
+      description: "{{ $labels.container }} har restartet flere ganger siste halvtimen! <!channel>"
+      action: "Se `kubectl describe pod {{ $labels.container }}  -n helsearbeidsgiver` for events, og `kubectl logs {{ $labels.container }}  -n helsearbeidsgiver` for logger"
+      sla: respond within 1h, during office hours
+      severity: danger
+    - alert: harebeidsgiver-errorlogging
+      expr: (100 * sum by (log_app) (rate(logd_messages_total{log_namespace="helsearbeidsgiver",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_namespace="helsearbeidsgiver"}[5m]))) > 10
+      for: 3m
+      description: "{{ $labels.log_app }} rapporterer error i loggene <!channel>"
+      action: "Sjekk loggene til {{ $labels.log_app }}, for å se hvorfor det er så mye feil (over 10 feil per 100 logger de siste 5 minuttene)"
+      severity: danger
