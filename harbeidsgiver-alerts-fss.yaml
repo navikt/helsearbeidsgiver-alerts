@@ -56,7 +56,12 @@ spec:
       description: "Bakgrunnsjobb feilet permanent i syfoinntektsmelding!! MÅ SJEKKES!"
       action: "https://logs.adeo.no/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-24h,to:now))&_a=(columns:!(message,envclass,level,application,host),filters:!(),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:kuery,query:'application:%20syfoinntektsmelding%20and%20message:%20permanent%20and%20envclass:%20p'),sort:!())"
       severity: danger
-
+    - alert: helse-arbeidsgiver-spinn-utsatt-oppgave
+      expr: sum(increase(spinn_syfoinntektsmelding_utsatt_oppgave_utsett[12h])) by (container) < 100
+      for: 5m
+      description: "Det er lite aktivitet på kafka i Spinn."
+      action: "Sjekk om kafka kjører. Restart pod om den har låst seg."
+      severity: danger
     - alert: bakgrunnsjobb-feilet-permanent-sporenstreks
       expr: sum(increase(sporenstreks_bakgrunnsjobb_stoppet_total[5m])) > 1
       for: 1m
