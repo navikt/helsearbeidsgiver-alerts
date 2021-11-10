@@ -60,7 +60,7 @@ spec:
       expr: sum(increase(spinn_syfoinntektsmelding_utsatt_oppgave_utsett[12h])) by (container) < 100
       for: 5m
       description: "Det er lite aktivitet på kafka i Spinn."
-      action: "Sjekk om kafka kjører. Restart pod om den har låst seg."
+      action: "Sjekk om kafka kjører. Restart pod om den har låst seg. https://grafana.nais.io/d/D89T_WWGk/spinn"
       severity: danger
     - alert: bakgrunnsjobb-feilet-permanent-sporenstreks
       expr: sum(increase(sporenstreks_bakgrunnsjobb_stoppet_total[5m])) > 1
