@@ -69,7 +69,7 @@ spec:
       action: "https://logs.adeo.no/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-24h,to:now))&_a=(columns:!(message,envclass,level,application,host),filters:!(),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:kuery,query:'application:%20sporenstreks%20and%20message:%20permanent%20and%20envclass:%20p'),sort:!())"
       severity: danger
     - alert: helse-arbeidsgiver-im-varsel
-      expr: sum(increase(helsearbeidsgiverimvarsel_sendte_varsler{app="im-varsel"}[2h])) < 5 AND hour() > 7 AND hour() < 17 AND day_of_week() < 6 AND day_of_week() > 0
+      expr: sum(increase(helsearbeidsgiverimvarsel_sendte_varsler{app="im-varsel"}[2h])) < 1 AND hour() > 7 AND hour() < 17 AND day_of_week() < 6 AND day_of_week() > 0
       for: 5m
       description: "Det er sendt ut få varsler."
       action: "Sjekk om kafka kjører. Restart pod om den har låst seg. https://grafana.nais.io/d/w26Gq83Wk/helsearbeidsgiver-im-varsel"
