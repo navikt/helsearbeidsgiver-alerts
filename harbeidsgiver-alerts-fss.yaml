@@ -10,6 +10,12 @@ spec:
     slack:
       channel: '#helse-arbeidsgiver-alerts'
   alerts:
+    - alert: helsearbeidsgiver-feil
+      expr: sum(increase(logd_messages_total{log_namespace="helsearbeidsgiver", log_level="Error"}[10m])) by (log_app) > 0
+      for: 2m
+      description: "Det oppstod feil på {{ log_app }}"
+      action: "Sjekk logger"
+      severity: danger
     - alert: harbeidsgiver-app-nede
       expr: up{app=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend",job="kubernetes-pods"} == 0
       for: 2m
