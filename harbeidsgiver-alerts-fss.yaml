@@ -13,7 +13,7 @@ spec:
     - alert: helsearbeidsgiver-feil
       expr: sum(increase(logd_messages_total{log_namespace="helsearbeidsgiver", log_level="Error"}[10m]))  > 0
       for: 2m
-      description: "Det oppstod feil på {{ log_app }}"
+      description: "Det oppstod feil"
       action: "Sjekk logger"
       severity: danger
     - alert: harbeidsgiver-app-nede
