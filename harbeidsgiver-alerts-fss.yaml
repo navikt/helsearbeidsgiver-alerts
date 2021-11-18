@@ -11,7 +11,7 @@ spec:
       channel: '#helse-arbeidsgiver-alerts'
   alerts:
     - alert: helsearbeidsgiver-feil
-      expr: sum(increase(logd_messages_total{log_namespace="helsearbeidsgiver", log_level="Error"}[10m])) by (log_app) > 0
+      expr: sum(increase(logd_messages_total{log_namespace="helsearbeidsgiver", log_level="Error"}[10m]))  > 0
       for: 2m
       description: "Det oppstod feil på {{ log_app }}"
       action: "Sjekk logger"
