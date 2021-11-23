@@ -10,11 +10,11 @@ spec:
     slack:
       channel: '#helse-arbeidsgiver-alerts'
   alerts:
-    - alert: helsearbeidsgiver-feil
+    - alert: helse-arbeidsgiver-error
       expr: sum(increase(logd_messages_total{log_namespace="helsearbeidsgiver", log_level="Error"}[10m]))  > 0
       for: 2m
-      description: "Det oppstod feil"
-      action: "Sjekk logger"
+      description: "Det oppstod feil i en eller flere apper. Sjekk (non-secure) logger."
+      action: "https://logs.adeo.no/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-1h,to:now))&_a=(columns:!(message,envclass,level,application,host),filters:!(),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:kuery,query:'team:%22helsearbeidsgiver%22%20and%20envclass:%22p%22%20%20and%20level:%22Error%22'),sort:!())"
       severity: danger
     - alert: harbeidsgiver-app-nede
       expr: up{app=~"syfoinntektsmelding|spberegning|sporenstreks|sporenstreks-frontend",job="kubernetes-pods"} == 0
