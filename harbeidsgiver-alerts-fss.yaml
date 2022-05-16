@@ -50,14 +50,14 @@ spec:
       action: "Sjekk loggene til {{ $labels.log_app }}, for å se hvorfor det er så mye feil (over 20 feil per 100 logger de siste 15 minuttene)"
       severity: warning
     - alert: syfoinntektsmelding-mottar-ikke-im
-      expr: sum(increase(syfoinntektsmelding_inntektsmeldinger_mottatt_total [20m]) ) < 1 AND hour() > 8 AND hour() < 16 AND day_of_week() < 6 AND day_of_week() > 0
+      expr: sum(increase(spinn_syfoinntektsmelding_inntektsmeldinger_mottatt_total [20m]) ) < 1 AND hour() > 8 AND hour() < 16 AND day_of_week() < 6 AND day_of_week() > 0
       for: 3m
       description: "{{ $labels.log_app }} Har ikke mottatt noen inntektsmeldinger de siste 20 minuttene"
       action: "Prøv å finn ut hvorfor {{ $labels.log_app }} ikke mottar inntektsmeldinger"
       severity: warning
 
     - alert: bakgrunnsjobb-feilet-permanent-spinn
-      expr: sum(increase(syfoinntektsmelding_bakgrunnsjobb_stoppet_total[5m])) > 1
+      expr: sum(increase(spinn_syfoinntektsmelding_bakgrunnsjobb_stoppet_total[5m])) > 1
       for: 1m
       description: "Bakgrunnsjobb feilet permanent i syfoinntektsmelding!! MÅ SJEKKES!"
       action: "https://logs.adeo.no/app/discover#/?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-24h,to:now))&_a=(columns:!(message,envclass,level,application,host),filters:!(),index:'96e648c0-980a-11e9-830a-e17bbd64b4db',interval:auto,query:(language:kuery,query:'application:%20syfoinntektsmelding%20and%20message:%20permanent%20and%20envclass:%20p'),sort:!())"
