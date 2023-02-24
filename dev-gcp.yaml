@@ -9,8 +9,8 @@ spec:
   groups:
     - name: my-alert
       rules:
-        - alert: InstanceDown
-          expr: count(up) == 0
+        - alert: InstanceDown (test)
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-akkumulator", level="info"} [1h]))) > 0
           for: 5m
           annotations:
             consequence: Application is unavailable
