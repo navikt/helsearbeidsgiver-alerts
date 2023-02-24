@@ -4,7 +4,7 @@ metadata:
   name: helsearbeidsgiver-alerts-dev-gcp
   namespace: helsearbeidsgiver
   labels:
-    team: helse-arbeidsgiver-alerts
+    team: helsearbeidsgiver
 spec:
   groups:
     - name: my-alert
@@ -20,5 +20,5 @@ spec:
               linebreaks and everything. Here you can give a more detailed
               summary of what this alert is about
           labels:
-            namespace: helsearbeidsgiver # required
+            namespace: helse-arbeidsgiver-alerts # required
             severity: critical
