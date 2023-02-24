@@ -9,7 +9,7 @@ spec:
   groups:
     - name: my-alert
       rules:
-        - alert: InstanceDown (test)
+        - alert: Akkumulator nede (test)
           expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-akkumulator", level="info"} [1h]))) > 0
           for: 5m
           annotations:
@@ -20,5 +20,5 @@ spec:
               linebreaks and everything. Here you can give a more detailed
               summary of what this alert is about
           labels:
-            namespace: helsearbeidsgiver # required
+            namespace: helse-arbeidsgiver-alerts # required
             severity: critical
