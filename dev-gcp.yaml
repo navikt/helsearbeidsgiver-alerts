@@ -9,8 +9,8 @@ spec:
   groups:
     - name: my-alert
       rules:
-        - alert: Akkumulator nede (test)
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-akkumulator", level="info"} [1h]))) > 0
+        - alert: im-db nede (test)
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-db", level="info"} [1h]))) > 0
           for: 5m
           annotations:
             consequence: Application is unavailable
