@@ -1,20 +1,24 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: helse-arbeidsgiver-alerts-dev-gcp
+  name: my-alert
   namespace: helsearbeidsgiver
   labels:
     team: helsearbeidsgiver
 spec:
-  receivers:
-    slack:
-      channel: '#helse-arbeidsgiver-alerts'
   groups:
-    - name: Applikasjon nede
+    - name: my-alert
       rules:
-        - alert: Tester alerts for PrometheusRule
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-api", level="info"} [3m]))) > 0
+        - alert: InstanceDown
+          expr: count(up) == 0
           for: 5m
+          annotations:
+            consequence: Application is unavailable
+            action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
+            summary: |-
+              This is a multi-line summary with
+              linebreaks and everything. Here you can give a more detailed
+              summary of what this alert is about
           labels:
-            namespace: helsearbeidsgiver
-            severity: info
+            namespace: helsearbeidsgiver # required
+            severity: critical
