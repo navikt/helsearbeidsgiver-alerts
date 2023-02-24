@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - '/nais/dev-gcp.yaml'
+      - 'nais/dev-gcp.yaml'
       - '.github/workflows/alerts.yaml'
 jobs:
   apply-alerts:
