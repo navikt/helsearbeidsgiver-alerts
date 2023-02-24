@@ -12,43 +12,9 @@ spec:
   groups:
     - name: Applikasjon nede
       rules:
-        - alert: Applikasjon nede
-          expr: count(up) == 0
-          for: 5m
-          annotations:
-            consequence: Applikasjon nede
-            action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
-            summary: "App \{{ $labels.deployment }} er nede i namespace \{{ $labels.namespace }}"
-          labels:
-            namespace: helsearbeidsgiver # required
-            severity: critical
-
-        - alert: Høy andel error i logger
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="{{app}}", level="error"} [3m]))) > 0
-          for: 5m
-          annotations:
-            action: "`kubectl logs {{$labels.pod}} -c {{$labels.container}} -n {{$labels.namespace}}`"
-            summary: "Helsesjekk for app \{{ $labels.app }} feiler med \{{ $labels.exception }} i namespace \{{ $labels.namespace }}"
-          labels:
-            namespace: {{namespace}}
-            severity: danger
-
-        - alert: Høy andel warning i logger
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="{{app}}", level="warning"} [3m]))) > 0
-          for: 5m
-          annotations:
-            action: "`kubectl logs {{$labels.pod}} -c {{$labels.container}} -n {{$labels.namespace}}`"
-            summary: "Helsesjekk for app \{{ $labels.app }} feiler med \{{ $labels.exception }} i namespace \{{ $labels.namespace }}"
-          labels:
-            namespace: {{namespace}}
-            severity: warning
-
         - alert: Tester alerts for PrometheusRule
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="{{app}}", level="info"} [3m]))) > 0
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-api", level="info"} [3m]))) > 0
           for: 5m
-          annotations:
-            action: "`kubectl logs {{$labels.pod}} -c {{$labels.container}} -n {{$labels.namespace}}`"
-            summary: "Helsesjekk for app \{{ $labels.app }} feiler med \{{ $labels.exception }} i namespace \{{ $labels.namespace }}"
           labels:
-            namespace: {{namespace}}
+            namespace: helsearbeidsgiver
             severity: info
