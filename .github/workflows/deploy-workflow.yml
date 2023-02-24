@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '/harbeidsgiver-alerts-fss.yaml'
+      - '/harbeidsgiver-alerts-gcp.yaml'
+      - '.github/workflows/deploy-workflow.yaml'
 jobs:
   deploy_prod_fss:
     name: Deploy alert to prod-fss
