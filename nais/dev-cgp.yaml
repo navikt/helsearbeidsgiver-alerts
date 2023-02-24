@@ -42,3 +42,13 @@ spec:
           labels:
             namespace: {{namespace}}
             severity: warning
+
+        - alert: Tester alerts for PrometheusRule
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="{{app}}", level="info"} [3m]))) > 0
+          for: 5m
+          annotations:
+            action: "`kubectl logs {{$labels.pod}} -c {{$labels.container}} -n {{$labels.namespace}}`"
+            summary: "Helsesjekk for app \{{ $labels.app }} feiler med \{{ $labels.exception }} i namespace \{{ $labels.namespace }}"
+          labels:
+            namespace: {{namespace}}
+            severity: info
