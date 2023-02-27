@@ -6,11 +6,14 @@ metadata:
   labels:
     team: helsearbeidsgiver
 spec:
+  receivers:
+    slack:
+      channel: 'helse-arbeidsgiver-alerts'
   groups:
     - name: my-alert
       rules:
         - alert: InstanceDown (test)
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-akkumulator", level="info"} [1m]))) > 0
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-akkumulator", level="info"} [10s]))) > 0
           for: 5m
           annotations:
             consequence: Application is unavailable
