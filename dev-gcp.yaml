@@ -1,27 +1,50 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: helsearbeidsgiver-alerts-dev-gcp
+  name: dev-gcp-alerts
   namespace: helsearbeidsgiver
   labels:
     team: helsearbeidsgiver
 spec:
-  receivers:
-    slack:
-      channel: 'helse-arbeidsgiver-alerts'
   groups:
-    - name: my-alert
+    - name: dev-gcp-alerts
       rules:
-        - alert: InstanceDown (test)
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="im-akkumulator", level="info"} [10s]))) > 0
-          for: 5m
+        - alert: app-nede
+          expr: sum(up{namespace="helsearbeidsgiver", job="kubernetes-pods"}) by (app) == 0
+          for: 2m
           annotations:
-            consequence: Application is unavailable
+            consequence: Applikasjonen er utilgjengelig
             action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
             summary: |-
               This is a multi-line summary with
               linebreaks and everything. Here you can give a more detailed
               summary of what this alert is about
           labels:
-            namespace: helse-arbeidsgiver-alerts # required
+            namespace: helsearbeidsgiver # required
             severity: critical
+        - alert: kontinuerlig-restart
+          expr: sum(increase(kube_pod_container_status_restarts_total{namespace="helsearbeidsgiver"}[30m])) by (container) > 2
+          for: 5m
+          annotations:
+            consequence: Applikasjonen restarter for ofte
+            action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
+            summary: |-
+              This is a multi-line summary with
+              linebreaks and everything. Here you can give a more detailed
+              summary of what this alert is about
+          labels:
+            namespace: helsearbeidsgiver # required
+            severity: warning
+        - alert: mange-feil
+          expr: (100 * sum by (log_app) (rate(logd_messages_total{log_namespace="helsearbeidsgiver",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_namespace="helsearbeidsgiver"}[5m]))) > 10
+          for: 5m
+          annotations:
+            consequence: Applikasjonen har mange feil
+            action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
+            summary: |-
+              This is a multi-line summary with
+              linebreaks and everything. Here you can give a more detailed
+              summary of what this alert is about
+          labels:
+            namespace: helsearbeidsgiver # required
+            severity: warning
