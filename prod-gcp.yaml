@@ -10,10 +10,10 @@ spec:
     - name: prod-gcp-alerts
       rules:
         - alert: app-nede
-          expr: sum(up{namespace="helsearbeidsgiver", job="kubernetes-pods"}) by (app) == 0
+          expr: sum(up{namespace="helsearbeidsgiver"}) by (app) == 0
           for: 2m
           annotations:
-            consequence: Applikasjonen er utilgjengelig
+            consequence: Applikasjonen er nede
             action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
             summary: |-
               This is a multi-line summary with
@@ -36,7 +36,7 @@ spec:
             namespace: helsearbeidsgiver # required
             severity: warning
         - alert: mange-feil
-          expr: (100 * sum by (log_app) (rate(logd_messages_total{log_namespace="helsearbeidsgiver",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{log_namespace="helsearbeidsgiver"}[5m]))) > 10
+          expr: (100 * sum by (log_app) (rate(logd_messages_total{namespace="helsearbeidsgiver",log_level="Error"}[5m])) / sum by (log_app) (rate(logd_messages_total{namespace="helsearbeidsgiver"}[5m]))) > 10
           for: 5m
           annotations:
             consequence: Applikasjonen har mange feil
