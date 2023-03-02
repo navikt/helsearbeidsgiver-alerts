@@ -4,7 +4,8 @@ on:
     branches:
       - master
     paths:
-      - 'dev-gcp.yaml'
+      - 'prod-gcp.yaml'
+      - 'prod-fss.yaml'
       - '.github/workflows/alerts.yml'
 jobs:
   apply-alerts:
@@ -13,9 +14,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: deploy to dev-gcp
+      - name: Deploy to PROD-GCP
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: dev-gcp.yaml
+          CLUSTER: prod-gcp
+          RESOURCE: prod-gcp.yaml
+      - name: Deploy to PROD-FSS
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-fss
+          RESOURCE: prod-fss.yaml

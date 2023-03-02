@@ -1,13 +1,13 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: dev-gcp-alerts
+  name: prod-fss-alerts
   namespace: helsearbeidsgiver
   labels:
     team: helsearbeidsgiver
 spec:
   groups:
-    - name: dev-gcp-alerts
+    - name: prod-fss-alerts
       rules:
         - alert: app-nede
           expr: sum(up{namespace="helsearbeidsgiver", job="kubernetes-pods"}) by (app) == 0
