@@ -13,7 +13,7 @@ spec:
           expr: kube_deployment_status_replicas_available{namespace="helsearbeidsgiver"} == 0
           for: 2m
           annotations:
-            consequence: Applikasjonen er nede
+            consequence: '*\{{ $labels.app }}* er nede!'
             action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
             summary: |-
               This is a multi-line summary with
