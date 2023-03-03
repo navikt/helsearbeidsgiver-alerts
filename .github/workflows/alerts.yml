@@ -6,6 +6,7 @@ on:
     paths:
       - 'prod-gcp.yaml'
       - 'prod-fss.yaml'
+      - 'dev-gcp.yaml'
       - '.github/workflows/alerts.yml'
 jobs:
   apply-alerts:
@@ -26,3 +27,9 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
           RESOURCE: prod-fss.yaml
+      - name: Deploy to DEV-GCP
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: dev-gcp.yaml
