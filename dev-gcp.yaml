@@ -23,7 +23,7 @@ spec:
             namespace: helsearbeidsgiver # required
             severity: critical
         - alert: kontinuerlig-restart
-          expr: sum(increase(kube_pod_container_status_restarts_total{namespace="helsearbeidsgiver"}[30m])) by (container) > 2
+          expr: sum(increase(kube_pod_container_status_restarts_total{namespace="helsearbeidsgiver"}[30m])) by (container, pod) > 2
           for: 5m
           annotations:
             consequence: '*{{ $labels.pod }}* restarter for ofte'
