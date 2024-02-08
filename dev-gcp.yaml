@@ -26,7 +26,7 @@ spec:
           expr: sum(increase(kube_pod_container_status_restarts_total{namespace="helsearbeidsgiver"}[30m])) by (container, pod) > 2
           for: 5m
           annotations:
-            consequence: '*{{ $labels.pod }}* restarter for ofte'
+            consequence: '*{{ $pod }}* restarter for ofte'
             action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
             summary: |-
               This is a multi-line summary with
