@@ -21,12 +21,6 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: prod-gcp.yaml
-      - name: Deploy to PROD-FSS
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-fss
-          RESOURCE: prod-fss.yaml
       - name: Deploy to DEV-GCP
         uses: nais/deploy/actions/deploy@v1
         env:
