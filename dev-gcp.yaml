@@ -15,10 +15,6 @@ spec:
           annotations:
             consequence: '*{{ $labels.deployment }}* er nede!'
             action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
-            summary: |-
-              This is a multi-line summary with
-              linebreaks and everything. Here you can give a more detailed
-              summary of what this alert is about
           labels:
             namespace: helsearbeidsgiver # required
             severity: critical
@@ -28,10 +24,7 @@ spec:
           annotations:
             consequence: '*{{ $labels.pod }}* restarter for ofte'
             action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
-            summary: |-
-              This is a multi-line summary with
-              linebreaks and everything. Here you can give a more detailed
-              summary of what this alert is about
+
           labels:
             namespace: helsearbeidsgiver # required
             severity: warning
@@ -41,10 +34,6 @@ spec:
           annotations:
             consequence: '*{{ $labels.log_app }}* logger mange feil'
             action: "`kubectl describe pod {{ $labels.log_pod_name }}` -> `kubectl logs {{ $labels.log_pod_name }}`"
-            summary: |-
-              This is a multi-line summary with
-              linebreaks and everything. Here you can give a more detailed
-              summary of what this alert is about
           labels:
             namespace: helsearbeidsgiver # required
             severity: warning
@@ -54,10 +43,7 @@ spec:
           annotations:
             consequence: '*{{ $labels.log_app }}* logger mange warnings'
             action: "`kubectl describe pod {{ $labels.log_pod_name }}` -> `kubectl logs {{ $labels.log_pod_name }}`"
-            summary: |-
-              This is a multi-line summary with
-              linebreaks and everything. Here you can give a more detailed
-              summary of what this alert is about
+
           labels:
             namespace: helsearbeidsgiver # required
             severity: warning
