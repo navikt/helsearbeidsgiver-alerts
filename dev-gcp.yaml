@@ -48,7 +48,7 @@ spec:
             namespace: helsearbeidsgiver # required
             severity: warning
         - alert: ConsumerLag
-          expr: sum(kafka_consumergroup_group_lag{group=~"^helsearbeidsgiver.*"}) by (group, topic) > 100
+          expr: sum(kafka_consumergroup_group_lag{group=~"^helsearbeidsgiver.*|syfoinntektsmelding-v1"}) by (group, topic) > 100
           for: 15m
           annotations:
             consequence: 'Consumer med groupid *{{ $labels.group }}* har mye lag mot Kafka på topic *{{ $labels.topic }}*'
